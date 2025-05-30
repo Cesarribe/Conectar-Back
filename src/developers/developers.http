@@ -9,19 +9,19 @@ POST  http://localhost:3000/developers
 Content-Type: application/json
 
 { 
-    "name":"Cesar",
-    "email":"Cesar@gmail.com",
-    "dateOfBrith":"1990-01-01"
+    "name":"julio",
+    "email":"julio@gmail.com",
+    "dateOfBirth":"1990-02-01"
 
 }
 
-###get developers
+###update developers
 PATCH  http://localhost:3000/developers/1
 Content-Type: application/json
 
 { 
     
-    "email":"Cesar",
+    "email":"Cesar@hotmail.com",
     }
 
 ###delete developers

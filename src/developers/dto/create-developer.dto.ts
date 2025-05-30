@@ -3,11 +3,11 @@ import { IsDateString, IsString } from "class-validator";
 export class CreateDeveloperDto {
 
     @IsString()
-    name: String;
+    name: string;
 
     @IsString()
-    email: String;
+    email: string;
 
     @IsDateString()
-    dateOfBrith: String;
+    dateOfBirth: string;
 }

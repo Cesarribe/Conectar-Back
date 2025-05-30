@@ -1,35 +1,22 @@
-import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-const { nanoid } = require('nanoid');
-
-@Entity('developers')
+@Entity()
 export class Developer {
-  @PrimaryColumn()
-  id: string;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column()
-  dateOfBirth: string;
-
-  @Column({ default: 'user' }) // Define 'user' como padrão
-  role: string;
+  dateOfBirth!: string;
 
   @Column()
-  password: string;
+  role!: string;
 
-  @BeforeInsert()
-  generateId() {
-    this.id = `dev_${nanoid()}`;
-  }
-
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
+  @Column()
+  password!: string;
 }

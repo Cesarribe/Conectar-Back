@@ -33,7 +33,7 @@ async findAll(@Req() req) {
   return this.developersService.findAll();
 }
 
-  @UseGuards(AuthGuard) // 🔒 Protege a busca por ID
+  @UseGuards(AuthGuard) 
   @Get(':id')
   async findOne(@Param('id') id: string, @Req() req) {
     if (req.user.id !== id && req.user.role !== 'admin') {

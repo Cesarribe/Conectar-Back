@@ -5,6 +5,7 @@ import { AuthMiddleware } from './auth/auth.middleware';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DevelopersModule } from './developers/developers.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,12 +20,13 @@ import { DevelopersModule } from './developers/developers.module';
       synchronize: true,
     }),
     DevelopersModule,
+    AuthModule, // 
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('*'); // Aplica o middleware globalmente
+    consumer.apply(AuthMiddleware).forRoutes('protected-route'); //
   }
 }

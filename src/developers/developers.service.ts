@@ -12,29 +12,32 @@ export class DevelopersService {
     private readonly repository: Repository<Developer>,
   ) {}
 
-  create(dto: CreateDeveloperDto) {
+  async create(dto: CreateDeveloperDto) {
     const developer = this.repository.create(dto);
-    return this.repository.save(developer);
+    return await this.repository.save(developer);
   }
 
-  findAll() {
-    return this.repository.find();
+  async findAll() {
+    return await this.repository.find();
   }
 
-  findOne(id: string) {
-    return this.repository.findOneBy({ id });
+  async findOne(id: string | number) {
+    const developer = await this.repository.findOneBy({ id: Number(id) }); // ✅ Converte para número, se necessário
+    return developer || null; // ✅ Retorna `null` se não encontrar
   }
 
-  async update(id: string, dto: UpdateDeveloperDto) {
-    const developer = await this.repository.findOneBy({ id });
+  async update(id: string | number, dto: UpdateDeveloperDto) {
+    const developer = await this.repository.findOneBy({ id: Number(id) }); // ✅ Converte para número, se necessário
     if (!developer) return null;
-    this.repository.merge(developer, dto);
-    return this.repository.save(developer);
+
+    this.repository.merge(developer, dto); // ✅ Atualiza apenas os campos modificados
+    return await this.repository.save(developer);
   }
 
-  async remove(id: string) {
-    const developer = await this.repository.findOneBy({ id });
+  async remove(id: string | number) {
+    const developer = await this.repository.findOneBy({ id: Number(id) }); // ✅ Converte para número, se necessário
     if (!developer) return null;
-    return this.repository.remove(developer);
+
+    return await this.repository.remove(developer);
   }
 }

@@ -1,8 +1,11 @@
-import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  constructor(private readonly configService: ConfigService) {}
+
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
     const token = request.headers.authorization?.split(' ')[1];
@@ -12,7 +15,13 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const jwtSecret = this.configService.get<string>('JWT_SECRET');
+
+      if (!jwtSecret) {
+        throw new InternalServerErrorException('JWT_SECRET não foi configurado corretamente.');
+      }
+
+      const decoded = jwt.verify(token, jwtSecret);
       request.user = decoded;
       return true;
     } catch (error) {
